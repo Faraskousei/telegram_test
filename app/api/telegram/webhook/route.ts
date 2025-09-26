@@ -26,6 +26,9 @@ export async function POST(request: NextRequest) {
   }
 }
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
+
 async function handleMessage(message: any) {
   const user = message.from
   const chatId = message.chat.id

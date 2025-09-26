@@ -21,7 +21,7 @@ NEXT_PUBLIC_FIREBASE_APP_ID=1:142941537714:web:fbb4f4d18715688e8550ab
 
 # Production Configuration
 NODE_ENV=production
-NEXT_PUBLIC_APP_URL=https://farastele-cfog7guq4-frxadz-6046s-projects.vercel.app
+NEXT_PUBLIC_APP_URL=https://farastele.vercel.app
 
 # YouTube API Configuration
 YOUTUBE_API_KEY=AIzaSyDyrS8Hj0P4IDXw5llepPcEcWEAWEMhYuk

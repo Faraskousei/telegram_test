@@ -28,7 +28,9 @@ export default function MusicPlayer({ className = '' }: MusicPlayerProps) {
     { name: 'Lofi Hip Hop', url: 'https://www.youtube.com/watch?v=jfKfPfyJRdk' },
     { name: 'Chill Music', url: 'https://www.youtube.com/watch?v=5qap5aO4i9A' },
     { name: 'Jazz Music', url: 'https://www.youtube.com/watch?v=Dx5qFachd3A' },
-    { name: 'Classical', url: 'https://www.youtube.com/watch?v=9E6b3swbnWg' }
+    { name: 'Classical', url: 'https://www.youtube.com/watch?v=9E6b3swbnWg' },
+    { name: 'Focus Music', url: 'https://www.youtube.com/watch?v=4xDzrJKXOOY' },
+    { name: 'Ambient Sounds', url: 'https://www.youtube.com/watch?v=DWcJFNfaw9c' }
   ]
 
   useEffect(() => {
@@ -123,6 +125,11 @@ export default function MusicPlayer({ className = '' }: MusicPlayerProps) {
       toast.loading(`Searching for: ${searchQuery}...`)
       
       const response = await fetch(`/api/music/search?q=${encodeURIComponent(searchQuery)}`)
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+      }
+      
       const data = await response.json()
       
       if (data.success && data.data.results.length > 0) {
@@ -136,7 +143,31 @@ export default function MusicPlayer({ className = '' }: MusicPlayerProps) {
       }
     } catch (error) {
       console.error('Search error:', error)
-      toast.error('Error searching music')
+      toast.error('Error searching music: ' + (error instanceof Error ? error.message : 'Unknown error'))
+      
+      // Fallback to sample tracks
+      setSearchResults([
+        {
+          id: 'sample1',
+          title: `${searchQuery} - Sample Track 1`,
+          artist: 'Sample Artist',
+          duration: '3:45',
+          url: 'https://www.youtube.com/watch?v=jfKfPfyJRdk',
+          thumbnail: 'https://img.youtube.com/vi/jfKfPfyJRdk/maxresdefault.jpg',
+          source: 'sample'
+        },
+        {
+          id: 'sample2',
+          title: `${searchQuery} - Sample Track 2`,
+          artist: 'Sample Artist 2',
+          duration: '4:20',
+          url: 'https://www.youtube.com/watch?v=5qap5aO4i9A',
+          thumbnail: 'https://img.youtube.com/vi/5qap5aO4i9A/maxresdefault.jpg',
+          source: 'sample'
+        }
+      ])
+      setShowResults(true)
+      toast.success('Showing sample tracks (API unavailable)')
     }
   }
 

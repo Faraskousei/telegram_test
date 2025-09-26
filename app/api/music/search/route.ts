@@ -46,42 +46,51 @@ export async function GET(request: NextRequest) {
           source: 'youtube'
         }
       })
-    } catch (youtubeError) {
-      console.error('YouTube API error:', youtubeError)
-      
-      // Fallback to mock results if YouTube API fails
-      const mockResults = [
-        {
-          id: '1',
-          title: `${query} - Lofi Version`,
-          artist: 'Lofi Artist',
-          duration: '3:45',
-          url: 'https://www.youtube.com/watch?v=jfKfPfyJRdk',
-          thumbnail: 'https://img.youtube.com/vi/jfKfPfyJRdk/maxresdefault.jpg',
-          source: 'youtube'
-        },
-        {
-          id: '2',
-          title: `${query} - Chill Mix`,
-          artist: 'Chill Artist',
-          duration: '4:20',
-          url: 'https://www.youtube.com/watch?v=5qap5aO4i9A',
-          thumbnail: 'https://img.youtube.com/vi/5qap5aO4i9A/maxresdefault.jpg',
-          source: 'youtube'
-        }
-      ]
+        } catch (youtubeError) {
+          console.error('YouTube API error:', youtubeError)
+          
+          // Fallback to mock results if YouTube API fails
+          const mockResults = [
+            {
+              id: '1',
+              title: `${query} - Lofi Version`,
+              artist: 'Lofi Artist',
+              duration: '3:45',
+              url: 'https://www.youtube.com/watch?v=jfKfPfyJRdk',
+              thumbnail: 'https://img.youtube.com/vi/jfKfPfyJRdk/maxresdefault.jpg',
+              source: 'youtube'
+            },
+            {
+              id: '2',
+              title: `${query} - Chill Mix`,
+              artist: 'Chill Artist',
+              duration: '4:20',
+              url: 'https://www.youtube.com/watch?v=5qap5aO4i9A',
+              thumbnail: 'https://img.youtube.com/vi/5qap5aO4i9A/maxresdefault.jpg',
+              source: 'youtube'
+            },
+            {
+              id: '3',
+              title: `${query} - Relaxing Music`,
+              artist: 'Relaxing Artist',
+              duration: '5:30',
+              url: 'https://www.youtube.com/watch?v=neV3Hr_b_18',
+              thumbnail: 'https://img.youtube.com/vi/neV3Hr_b_18/maxresdefault.jpg',
+              source: 'youtube'
+            }
+          ]
 
-      return NextResponse.json({
-        success: true,
-        data: {
-          query,
-          results: mockResults,
-          total: mockResults.length,
-          source: 'mock',
-          warning: 'Using mock data due to API error'
+          return NextResponse.json({
+            success: true,
+            data: {
+              query,
+              results: mockResults,
+              total: mockResults.length,
+              source: 'mock',
+              warning: 'Using mock data due to API error'
+            }
+          })
         }
-      })
-    }
   } catch (error) {
     console.error('Error searching music:', error)
     
