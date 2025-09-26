@@ -15,6 +15,15 @@ import {
 } from 'firebase/firestore'
 import { db } from './firebase'
 
+// Check if Firebase is available
+const isFirebaseAvailable = () => {
+  try {
+    return db !== null && db !== undefined
+  } catch (error) {
+    return false
+  }
+}
+
 // Types
 export interface User {
   id?: string
@@ -141,6 +150,10 @@ export const getConversions = async (userId?: number, limitCount: number = 10) =
 // Stats operations
 export const getBotStats = async () => {
   try {
+    if (!isFirebaseAvailable()) {
+      throw new Error('Firebase not available')
+    }
+    
     const statsRef = doc(db, 'stats', 'bot')
     const statsDoc = await getDoc(statsRef)
     

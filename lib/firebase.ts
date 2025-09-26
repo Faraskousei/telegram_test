@@ -5,11 +5,11 @@ import { getStorage } from 'firebase/storage'
 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY || "AIzaSyDO9QTPwSLc7YEyEu-vkAewptzRVcWdF78",
-  authDomain: `${process.env.FIREBASE_PROJECT_ID || "telegram-bot-12345"}.firebaseapp.com`,
-  projectId: process.env.FIREBASE_PROJECT_ID || "telegram-bot-12345",
-  storageBucket: process.env.FIREBASE_STORAGE_BUCKET || "telegram-bot-12345.appspot.com",
-  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID || "123456789",
-  appId: process.env.FIREBASE_APP_ID || "1:123456789:web:abcdef123456"
+  authDomain: `${process.env.FIREBASE_PROJECT_ID || "db-ind-b9d1c"}.firebaseapp.com`,
+  projectId: process.env.FIREBASE_PROJECT_ID || "db-ind-b9d1c",
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET || "db-ind-b9d1c.appspot.com",
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID || "142941537714",
+  appId: process.env.FIREBASE_APP_ID || "1:142941537714:web:fbb4f4d18715688e8550ab"
 }
 
 // Initialize Firebase

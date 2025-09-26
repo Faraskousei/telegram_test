@@ -1,23 +1,29 @@
 import { initializeApp, getApps, cert } from 'firebase-admin/app'
 import { getFirestore } from 'firebase-admin/firestore'
 import { getAuth } from 'firebase-admin/auth'
-import { getStorage } from 'firebase-admin/storage'
 
+// Firebase Admin configuration
 const firebaseAdminConfig = {
-  credential: cert({
-    projectId: "telegram-bot-12345",
-    clientEmail: "firebase-adminsdk-12345@telegram-bot-12345.iam.gserviceaccount.com",
-    privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-  }),
-  storageBucket: "telegram-bot-12345.appspot.com"
+  projectId: process.env.FIREBASE_PROJECT_ID || "db-ind-b9d1c",
+  // For production, you would use a service account key
+  // For development, we'll use the default credentials
 }
 
-// Initialize Firebase Admin
-const app = getApps().length === 0 ? initializeApp(firebaseAdminConfig) : getApps()[0]
+// Initialize Firebase Admin (only if not already initialized)
+let adminApp
+if (getApps().length === 0) {
+  try {
+    adminApp = initializeApp(firebaseAdminConfig)
+  } catch (error) {
+    console.warn('Firebase Admin initialization failed:', error)
+    // Continue without admin features
+  }
+} else {
+  adminApp = getApps()[0]
+}
 
-// Initialize Firebase Admin services
-export const adminDb = getFirestore(app)
-export const adminAuth = getAuth(app)
-export const adminStorage = getStorage(app)
+// Export services
+export const adminDb = adminApp ? getFirestore(adminApp) : null
+export const adminAuth = adminApp ? getAuth(adminApp) : null
 
-export default app
+export default adminApp
