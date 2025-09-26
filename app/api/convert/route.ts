@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
 
     // Simulate file processing (replace with actual conversion logic)
     const fileName = file.name
-    const fileExtension = fileName.split('.').pop()?.toLowerCase()
+    const processedFileExtension = fileName.split('.').pop()?.toLowerCase()
     
     let convertedFileName = ''
     let downloadUrl = ''
