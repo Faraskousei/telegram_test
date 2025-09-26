@@ -127,3 +127,4 @@ Thumbs.db
 # Bot specific
 bot.log
 bot_data.db
+.vercel

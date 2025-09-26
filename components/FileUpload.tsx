@@ -16,7 +16,7 @@ export default function FileUpload() {
   const [files, setFiles] = useState<FileWithPreview[]>([])
   const [conversionType, setConversionType] = useState('pdf-to-word')
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
+  const onDrop = useCallback(async (acceptedFiles: File[]) => {
     const newFiles = acceptedFiles.map(file => ({
       ...file,
       id: Math.random().toString(36).substr(2, 9),
@@ -26,34 +26,55 @@ export default function FileUpload() {
     
     setFiles(prev => [...prev, ...newFiles])
     
-    // Simulasi upload dan processing
-    newFiles.forEach(file => {
-      simulateUpload(file.id)
-    })
+    // Real upload dan processing
+    for (const file of newFiles) {
+      await uploadFile(file)
+    }
     
     toast.success(`${acceptedFiles.length} file berhasil diupload`)
   }, [])
 
-  const simulateUpload = (fileId: string) => {
-    const interval = setInterval(() => {
-      setFiles(prev => prev.map(file => {
-        if (file.id === fileId) {
-          const newProgress = Math.min(file.progress + Math.random() * 20, 100)
-          let newStatus = file.status
-          
-          if (newProgress >= 100) {
-            newStatus = 'completed'
-            clearInterval(interval)
-            toast.success('File berhasil diproses!')
-          } else if (newProgress >= 50) {
-            newStatus = 'processing'
-          }
-          
-          return { ...file, progress: newProgress, status: newStatus }
+  const uploadFile = async (file: FileWithPreview) => {
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('type', conversionType)
+
+      const response = await fetch('/api/convert', {
+        method: 'POST',
+        body: formData
+      })
+
+      if (response.ok) {
+        const result = await response.json()
+        
+        setFiles(prev => prev.map(f => 
+          f.id === file.id 
+            ? { ...f, status: 'completed', progress: 100 }
+            : f
+        ))
+        
+        toast.success('File berhasil dikonversi!')
+        
+        // Download hasil konversi
+        if (result.data?.download_url) {
+          const link = document.createElement('a')
+          link.href = result.data.download_url
+          link.download = result.data.converted_file
+          link.click()
         }
-        return file
-      }))
-    }, 500)
+      } else {
+        throw new Error('Upload failed')
+      }
+    } catch (error) {
+      console.error('Upload error:', error)
+      setFiles(prev => prev.map(f => 
+        f.id === file.id 
+          ? { ...f, status: 'error', progress: 0 }
+          : f
+      ))
+      toast.error('Error saat mengupload file!')
+    }
   }
 
   const removeFile = (fileId: string) => {

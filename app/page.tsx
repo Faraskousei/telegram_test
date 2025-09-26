@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { 
   FileText, 
   Image, 
@@ -24,14 +25,26 @@ import BotStats from '@/components/BotStats'
 import FeatureCard from '@/components/FeatureCard'
 import StatsChart from '@/components/StatsChart'
 import ActivityFeed from '@/components/ActivityFeed'
+import AuthGuard from '@/components/AuthGuard'
+import LogoutButton from '@/components/LogoutButton'
 
 export default function Home() {
+  const router = useRouter()
   const [stats, setStats] = useState({
     totalUsers: 0,
     totalFiles: 0,
     activeConversations: 0,
     uptime: '0d 0h 0m'
   })
+
+  useEffect(() => {
+    // Check if user is authenticated
+    const isAuthenticated = localStorage.getItem('isAuthenticated')
+    if (!isAuthenticated) {
+      router.push('/bot')
+      return
+    }
+  }, [router])
 
   const features = [
     {
@@ -93,7 +106,8 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <AuthGuard>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         {/* Background Elements */}
@@ -129,6 +143,7 @@ export default function Home() {
                   <Users className="h-5 w-5 mr-2" />
                   Users
                 </button>
+                <LogoutButton />
               </div>
             </div>
           </div>
@@ -285,6 +300,7 @@ export default function Home() {
           <ActivityFeed />
         </div>
       </main>
-    </div>
+      </div>
+    </AuthGuard>
   )
 }
