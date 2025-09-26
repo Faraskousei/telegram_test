@@ -28,6 +28,7 @@ import StatsChart from '@/components/StatsChart'
 import ActivityFeed from '@/components/ActivityFeed'
 import AuthGuard from '@/components/AuthGuard'
 import LogoutButton from '@/components/LogoutButton'
+import MusicPlayer from '@/components/MusicPlayer'
 
 export default function Home() {
   const router = useRouter()
@@ -146,6 +147,11 @@ export default function Home() {
                 </button>
                 <LogoutButton />
               </div>
+            </div>
+            
+            {/* Music Player */}
+            <div className="pb-4">
+              <MusicPlayer />
             </div>
           </div>
         </header>

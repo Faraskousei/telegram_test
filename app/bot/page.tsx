@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Bot, Send, FileText, Image, Download, Users, Zap, Shield } from 'lucide-react'
+import MusicPlayer from '@/components/MusicPlayer'
 
 export default function BotPage() {
   const [message, setMessage] = useState('')
@@ -66,6 +67,11 @@ export default function BotPage() {
               Chat Bot
             </a>
           </div>
+        </div>
+        
+        {/* Music Player */}
+        <div className="pb-4">
+          <MusicPlayer />
         </div>
       </header>
 

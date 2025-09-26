@@ -34,6 +34,22 @@ async function handleMessage(message: any) {
   
   // Handle commands
   if (text?.startsWith('/start')) {
+    // Send typing indicator
+    await sendTypingAction(chatId)
+    
+    // Send welcome message with progress
+    await sendMessage(chatId, '🤖 **Memulai Multi-Function Bot...**')
+    await sendTypingAction(chatId)
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    
+    await sendMessage(chatId, '📋 **Menyiapkan menu...**')
+    await sendTypingAction(chatId)
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    
+    await sendMessage(chatId, '✅ **Bot siap digunakan!**')
+    await sendTypingAction(chatId)
+    await new Promise(resolve => setTimeout(resolve, 500))
+    
     await sendMessageWithKeyboard(chatId, getWelcomeMessage(user.first_name), getMainKeyboard())
   } else if (text?.startsWith('/help')) {
     await sendMessage(chatId, getHelpMessage())
@@ -168,6 +184,25 @@ async function sendMessage(chatId: number, text: string) {
     }
   } catch (error) {
     console.error('Error sending message:', error)
+  }
+}
+
+async function sendTypingAction(chatId: number) {
+  const botToken = process.env.TELEGRAM_BOT_TOKEN || '8311046872:AAFJz-zTPe4X49YWyibejV4-ydDYl_jPdMw'
+  
+  try {
+    await fetch(`https://api.telegram.org/bot${botToken}/sendChatAction`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        chat_id: chatId,
+        action: 'typing'
+      })
+    })
+  } catch (error) {
+    console.error('Error sending typing action:', error)
   }
 }
 
