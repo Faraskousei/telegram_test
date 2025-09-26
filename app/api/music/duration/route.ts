@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = request.nextUrl
-    const videoId = searchParams.get('videoId')
+    const url = new URL(request.url)
+    const videoId = url.searchParams.get('videoId')
     
     if (!videoId) {
       return NextResponse.json({
