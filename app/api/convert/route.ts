@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
       }, { status: 400 })
     }
 
-    // Validate file type
+    // Validate file type with more flexible checking
     const allowedTypes = [
       'application/pdf',
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
@@ -40,11 +40,18 @@ export async function POST(request: NextRequest) {
       'image/jpg'
     ]
 
-    if (!allowedTypes.includes(file.type)) {
-      console.error('Unsupported file type:', file.type)
+    // Check file extension as fallback
+    const fileExtension = file.name.toLowerCase().split('.').pop()
+    const allowedExtensions = ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png']
+    
+    const isTypeAllowed = allowedTypes.includes(file.type) || 
+                         (fileExtension && allowedExtensions.includes(fileExtension))
+
+    if (!isTypeAllowed) {
+      console.error('Unsupported file type:', { type: file.type, extension: fileExtension })
       return NextResponse.json({
         success: false,
-        error: `Tipe file tidak didukung: ${file.type}`
+        error: `Tipe file tidak didukung. Gunakan PDF, Word, atau gambar.`
       }, { status: 400 })
     }
 

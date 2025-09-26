@@ -21,6 +21,7 @@ import {
   TrendingUp
 } from 'lucide-react'
 import FileUpload from '@/components/FileUpload'
+import SimpleFileUpload from '@/components/SimpleFileUpload'
 import BotStats from '@/components/BotStats'
 import FeatureCard from '@/components/FeatureCard'
 import StatsChart from '@/components/StatsChart'
@@ -267,7 +268,7 @@ export default function Home() {
                   </button>
                 </div>
               </div>
-              <FileUpload />
+              <SimpleFileUpload />
             </div>
           </div>
 

@@ -17,40 +17,49 @@ export default function FileUpload() {
   const [conversionType, setConversionType] = useState('pdf-to-word')
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
-    if (!acceptedFiles || acceptedFiles.length === 0) {
-      toast.error('Tidak ada file yang dipilih')
-      return
-    }
-
-    // Validate files
-    const validFiles = acceptedFiles.filter(file => {
-      if (file.size > 20 * 1024 * 1024) {
-        toast.error(`File ${file.name} terlalu besar! Maksimal 20MB.`)
-        return false
+    try {
+      if (!acceptedFiles || acceptedFiles.length === 0) {
+        toast.error('Tidak ada file yang dipilih')
+        return
       }
-      return true
-    })
 
-    if (validFiles.length === 0) {
-      toast.error('Tidak ada file yang valid untuk diupload')
-      return
-    }
+      // Validate files
+      const validFiles = acceptedFiles.filter(file => {
+        if (!file || !file.name) {
+          toast.error('File tidak valid')
+          return false
+        }
+        if (file.size > 20 * 1024 * 1024) {
+          toast.error(`File ${file.name} terlalu besar! Maksimal 20MB.`)
+          return false
+        }
+        return true
+      })
 
-    const newFiles = validFiles.map(file => ({
-      ...file,
-      id: Math.random().toString(36).substr(2, 9),
-      status: 'uploading' as const,
-      progress: 0
-    }))
-    
-    setFiles(prev => [...prev, ...newFiles])
-    
-    // Real upload dan processing
-    for (const file of newFiles) {
-      await uploadFile(file)
+      if (validFiles.length === 0) {
+        toast.error('Tidak ada file yang valid untuk diupload')
+        return
+      }
+
+      const newFiles = validFiles.map(file => ({
+        ...file,
+        id: Math.random().toString(36).substr(2, 9),
+        status: 'uploading' as const,
+        progress: 0
+      }))
+      
+      setFiles(prev => [...prev, ...newFiles])
+      
+      // Real upload dan processing
+      for (const file of newFiles) {
+        await uploadFile(file)
+      }
+      
+      toast.success(`${validFiles.length} file berhasil diupload`)
+    } catch (error) {
+      console.error('Error in onDrop:', error)
+      toast.error('Error saat memproses file')
     }
-    
-    toast.success(`${validFiles.length} file berhasil diupload`)
   }, [conversionType])
 
   const uploadFile = async (file: FileWithPreview) => {
@@ -62,9 +71,14 @@ export default function FileUpload() {
           : f
       ))
 
+      // Validate file before upload
+      if (!file || !file.name) {
+        throw new Error('File tidak valid')
+      }
+
       const formData = new FormData()
       formData.append('file', file)
-      formData.append('type', conversionType)
+      formData.append('type', conversionType || 'pdf-to-word')
 
       // Update progress to processing
       setFiles(prev => prev.map(f => 
@@ -82,7 +96,7 @@ export default function FileUpload() {
         const result = await response.json()
         
         // Check if result is valid
-        if (result && result.success) {
+        if (result && result.success === true) {
           setFiles(prev => prev.map(f => 
             f.id === file.id 
               ? { ...f, status: 'completed', progress: 100 }
@@ -102,8 +116,14 @@ export default function FileUpload() {
           throw new Error(result?.error || 'Conversion failed')
         }
       } else {
-        const errorData = await response.json().catch(() => ({}))
-        throw new Error(errorData.error || `HTTP ${response.status}`)
+        let errorMessage = `HTTP ${response.status}`
+        try {
+          const errorData = await response.json()
+          errorMessage = errorData.error || errorMessage
+        } catch (e) {
+          // Use default error message
+        }
+        throw new Error(errorMessage)
       }
     } catch (error) {
       console.error('Upload error:', error)
