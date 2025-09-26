@@ -121,7 +121,7 @@ export default function LoginPage() {
 
         {/* Footer */}
         <div className="text-center mt-8">
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-500 mb-4">
             Bot Telegram tersedia untuk semua orang di{' '}
             <a 
               href="https://t.me/Backup_indBot" 
@@ -130,6 +130,14 @@ export default function LoginPage() {
               className="text-blue-600 hover:text-blue-700 font-medium"
             >
               @Backup_indBot
+            </a>
+          </p>
+          <p className="text-sm text-gray-500">
+            <a 
+              href="/login-new" 
+              className="text-blue-600 hover:text-blue-700 font-medium"
+            >
+              🔐 Login dengan Firebase Authentication
             </a>
           </p>
         </div>

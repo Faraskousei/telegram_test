@@ -45,6 +45,9 @@ export default function Home() {
     if (!isAuthenticated) {
       router.push('/bot')
       return
+    } else {
+      router.push('/dashboard')
+      return
     }
   }, [router])
 

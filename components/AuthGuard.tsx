@@ -22,11 +22,11 @@ export default function AuthGuard({ children }: AuthGuardProps) {
         if (authStatus === 'true' && user) {
           setIsAuthenticated(true)
         } else {
-          router.push('/login')
+          router.push('/login-new')
         }
       } catch (error) {
         console.error('Auth check error:', error)
-        router.push('/login')
+        router.push('/login-new')
       } finally {
         setLoading(false)
       }

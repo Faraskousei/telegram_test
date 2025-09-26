@@ -57,15 +57,24 @@ export default function BotPage() {
                 <p className="text-sm text-gray-600">Bot Gratis untuk Semua Orang</p>
               </div>
             </div>
-            <a
-              href="https://t.me/Backup_indBot"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary"
-            >
-              <Bot className="h-5 w-5 mr-2" />
-              Chat Bot
-            </a>
+            <div className="flex items-center space-x-4">
+              <Link
+                href="/login-new"
+                className="btn-ghost text-blue-600 hover:text-blue-700"
+              >
+                <ExternalLink className="h-5 w-5 mr-2" />
+                Admin Login
+              </Link>
+              <a
+                href="https://t.me/Backup_indBot"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary"
+              >
+                <Bot className="h-5 w-5 mr-2" />
+                Chat Bot
+              </a>
+            </div>
           </div>
         </div>
         
