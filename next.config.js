@@ -6,6 +6,12 @@ const nextConfig = {
   env: {
     CUSTOM_KEY: process.env.CUSTOM_KEY,
   },
+  experimental: {
+    serverComponentsExternalPackages: ['firebase-admin'],
+  },
+  // Force dynamic rendering for API routes
+  trailingSlash: false,
+  skipTrailingSlashRedirect: true,
 }
 
 module.exports = nextConfig

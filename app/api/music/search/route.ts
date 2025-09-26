@@ -91,3 +91,6 @@ export async function GET(request: NextRequest) {
     }, { status: 500 })
   }
 }
+
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'

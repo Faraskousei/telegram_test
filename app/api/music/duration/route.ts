@@ -5,6 +5,9 @@ export async function GET(request: NextRequest) {
     const url = new URL(request.url)
     const videoId = url.searchParams.get('videoId')
     
+    // Force dynamic rendering
+    const dynamic = 'force-dynamic'
+    
     if (!videoId) {
       return NextResponse.json({
         success: false,
@@ -61,6 +64,9 @@ export async function GET(request: NextRequest) {
     }, { status: 500 })
   }
 }
+
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
 
 function parseDuration(duration: string): number {
   const match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/)

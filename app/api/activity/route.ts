@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getRecentActivity } from '@/lib/database'
 
 export async function GET(request: NextRequest) {
   try {
     const url = new URL(request.url)
     const limit = parseInt(url.searchParams.get('limit') || '10')
 
+    // Dynamic import to avoid static generation issues
+    const { getRecentActivity } = await import('@/lib/database')
+    
     // Fetch activity from Firebase
     const activities = await getRecentActivity(limit)
     
@@ -54,3 +56,6 @@ export async function GET(request: NextRequest) {
     })
   }
 }
+
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
