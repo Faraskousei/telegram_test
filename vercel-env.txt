@@ -1,24 +1,27 @@
+# Vercel Environment Variables
+# Copy these to Vercel Dashboard > Settings > Environment Variables
+
 # Telegram Bot Configuration
 TELEGRAM_BOT_TOKEN=8311046872:AAFJz-zTPe4X49YWyibejV4-ydDYl_jPdMw
-WEBHOOK_URL=http://localhost:3000
+WEBHOOK_URL=https://farastele-cfog7guq4-frxadz-6046s-projects.vercel.app
 
-# Firebase Configuration
+# Firebase Configuration (Server-side)
 FIREBASE_API_KEY=AIzaSyDO9QTPwSLc7YEyEu-vkAewptzRVcWdF78
 FIREBASE_PROJECT_ID=db-ind-b9d1c
 FIREBASE_STORAGE_BUCKET=db-ind-b9d1c.appspot.com
 FIREBASE_MESSAGING_SENDER_ID=142941537714
 FIREBASE_APP_ID=1:142941537714:web:fbb4f4d18715688e8550ab
 
-# Firebase Public Configuration (for client-side)
+# Firebase Public Configuration (Client-side)
 NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSyDO9QTPwSLc7YEyEu-vkAewptzRVcWdF78
 NEXT_PUBLIC_FIREBASE_PROJECT_ID=db-ind-b9d1c
 NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=db-ind-b9d1c.appspot.com
 NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=142941537714
 NEXT_PUBLIC_FIREBASE_APP_ID=1:142941537714:web:fbb4f4d18715688e8550ab
 
-# Development Configuration
-NODE_ENV=development
-NEXT_PUBLIC_APP_URL=http://localhost:3000
+# Production Configuration
+NODE_ENV=production
+NEXT_PUBLIC_APP_URL=https://farastele-cfog7guq4-frxadz-6046s-projects.vercel.app
 
 # YouTube API Configuration
 YOUTUBE_API_KEY=AIzaSyDyrS8Hj0P4IDXw5llepPcEcWEAWEMhYuk

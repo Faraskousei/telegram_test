@@ -23,8 +23,18 @@ console.log('');
 console.log('📋 Environment Variables yang perlu dikonfigurasi di Vercel:');
 console.log('');
 
+console.log('🔑 SERVER-SIDE VARIABLES (Production, Preview, Development):');
 Object.entries(ENV_VARS).forEach(([key, value]) => {
-  console.log(`✅ ${key} = ${value}`);
+  if (!key.startsWith('NEXT_PUBLIC_')) {
+    console.log(`✅ ${key} = ${value}`);
+  }
+});
+console.log('');
+console.log('🌐 CLIENT-SIDE VARIABLES (Production, Preview, Development):');
+Object.entries(ENV_VARS).forEach(([key, value]) => {
+  if (key.startsWith('NEXT_PUBLIC_')) {
+    console.log(`✅ ${key} = ${value}`);
+  }
 });
 
 console.log('');
