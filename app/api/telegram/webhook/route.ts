@@ -3,13 +3,20 @@ import { addUser, addConversion, updateUser } from '@/lib/database'
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('Webhook received:', new Date().toISOString())
+    
     const body = await request.json()
+    console.log('Webhook body:', JSON.stringify(body, null, 2))
     
     // Handle different types of updates
     if (body.message) {
+      console.log('Handling message:', body.message.text)
       await handleMessage(body.message)
     } else if (body.callback_query) {
+      console.log('Handling callback query:', body.callback_query.data)
       await handleCallbackQuery(body.callback_query)
+    } else {
+      console.log('Unknown update type:', body)
     }
     
     return NextResponse.json({ ok: true })
@@ -25,12 +32,17 @@ async function handleMessage(message: any) {
   const text = message.text
   
   // Add or update user
-  await addUser({
-    telegramId: user.id,
-    username: user.username,
-    firstName: user.first_name,
-    lastName: user.last_name
-  })
+  try {
+    await addUser({
+      telegramId: user.id,
+      username: user.username,
+      firstName: user.first_name,
+      lastName: user.last_name
+    })
+  } catch (error) {
+    console.error('Error adding user:', error)
+    // Continue even if user add fails
+  }
   
   // Handle commands
   if (text?.startsWith('/start')) {
@@ -167,6 +179,8 @@ async function sendMessage(chatId: number, text: string) {
   const botToken = process.env.TELEGRAM_BOT_TOKEN || '8311046872:AAFJz-zTPe4X49YWyibejV4-ydDYl_jPdMw'
   
   try {
+    console.log(`Sending message to ${chatId}: ${text}`)
+    
     const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
       method: 'POST',
       headers: {
@@ -179,8 +193,11 @@ async function sendMessage(chatId: number, text: string) {
       })
     })
     
+    const responseText = await response.text()
+    console.log(`Message response: ${response.status} - ${responseText}`)
+    
     if (!response.ok) {
-      console.error('Failed to send message:', await response.text())
+      console.error('Failed to send message:', responseText)
     }
   } catch (error) {
     console.error('Error sending message:', error)
@@ -191,7 +208,9 @@ async function sendTypingAction(chatId: number) {
   const botToken = process.env.TELEGRAM_BOT_TOKEN || '8311046872:AAFJz-zTPe4X49YWyibejV4-ydDYl_jPdMw'
   
   try {
-    await fetch(`https://api.telegram.org/bot${botToken}/sendChatAction`, {
+    console.log(`Sending typing action to ${chatId}`)
+    
+    const response = await fetch(`https://api.telegram.org/bot${botToken}/sendChatAction`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -201,6 +220,13 @@ async function sendTypingAction(chatId: number) {
         action: 'typing'
       })
     })
+    
+    const responseText = await response.text()
+    console.log(`Typing action response: ${response.status} - ${responseText}`)
+    
+    if (!response.ok) {
+      console.error('Failed to send typing action:', responseText)
+    }
   } catch (error) {
     console.error('Error sending typing action:', error)
   }
@@ -210,6 +236,8 @@ async function sendMessageWithKeyboard(chatId: number, text: string, keyboard: a
   const botToken = process.env.TELEGRAM_BOT_TOKEN || '8311046872:AAFJz-zTPe4X49YWyibejV4-ydDYl_jPdMw'
   
   try {
+    console.log(`Sending message with keyboard to ${chatId}: ${text}`)
+    
     const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
       method: 'POST',
       headers: {
@@ -223,8 +251,11 @@ async function sendMessageWithKeyboard(chatId: number, text: string, keyboard: a
       })
     })
     
+    const responseText = await response.text()
+    console.log(`Message with keyboard response: ${response.status} - ${responseText}`)
+    
     if (!response.ok) {
-      console.error('Failed to send message with keyboard:', await response.text())
+      console.error('Failed to send message with keyboard:', responseText)
     }
   } catch (error) {
     console.error('Error sending message with keyboard:', error)
