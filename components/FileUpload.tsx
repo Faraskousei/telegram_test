@@ -17,6 +17,11 @@ export default function FileUpload() {
   const [conversionType, setConversionType] = useState('pdf-to-word')
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
+    if (!acceptedFiles || acceptedFiles.length === 0) {
+      toast.error('Tidak ada file yang dipilih')
+      return
+    }
+
     const newFiles = acceptedFiles.map(file => ({
       ...file,
       id: Math.random().toString(36).substr(2, 9),
@@ -32,7 +37,7 @@ export default function FileUpload() {
     }
     
     toast.success(`${acceptedFiles.length} file berhasil diupload`)
-  }, [])
+  }, [conversionType])
 
   const uploadFile = async (file: FileWithPreview) => {
     try {
