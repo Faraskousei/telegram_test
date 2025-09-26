@@ -1,13 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { readFile } from 'fs/promises'
-import { join } from 'path'
 
 export async function GET(
   request: NextRequest,
   { params }: { params: { filename: string } }
 ) {
   try {
-    const { filename } = params
+    const filename = params.filename
     
     if (!filename) {
       return NextResponse.json({
@@ -16,22 +14,16 @@ export async function GET(
       }, { status: 400 })
     }
 
-    // Forward to Python API
-    const response = await fetch(`http://localhost:5000/api/download/${filename}`)
-    
-    if (!response.ok) {
-      return NextResponse.json({
-        success: false,
-        error: 'File tidak ditemukan'
-      }, { status: 404 })
-    }
+    // Simulate file download (replace with actual file serving logic)
+    const mockFileContent = `Mock converted file: ${filename}`
+    const buffer = Buffer.from(mockFileContent, 'utf-8')
 
-    const fileBuffer = await response.arrayBuffer()
-    
-    return new NextResponse(fileBuffer, {
+    return new NextResponse(buffer, {
+      status: 200,
       headers: {
         'Content-Type': 'application/octet-stream',
-        'Content-Disposition': `attachment; filename="${filename}"`
+        'Content-Disposition': `attachment; filename="${filename}"`,
+        'Content-Length': buffer.length.toString()
       }
     })
   } catch (error) {

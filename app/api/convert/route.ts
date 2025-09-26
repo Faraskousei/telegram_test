@@ -6,10 +6,27 @@ export async function POST(request: NextRequest) {
     const file = formData.get('file') as File
     const conversionType = formData.get('type') as string || 'pdf-to-word'
 
+    console.log('Convert API called:', { 
+      fileName: file?.name, 
+      fileType: file?.type, 
+      fileSize: file?.size,
+      conversionType 
+    })
+
     if (!file) {
+      console.error('No file provided')
       return NextResponse.json({
         success: false,
         error: 'Tidak ada file yang diupload'
+      }, { status: 400 })
+    }
+
+    // Validate file size (max 20MB)
+    if (file.size > 20 * 1024 * 1024) {
+      console.error('File too large:', file.size)
+      return NextResponse.json({
+        success: false,
+        error: 'File terlalu besar! Maksimal 20MB.'
       }, { status: 400 })
     }
 
@@ -24,9 +41,10 @@ export async function POST(request: NextRequest) {
     ]
 
     if (!allowedTypes.includes(file.type)) {
+      console.error('Unsupported file type:', file.type)
       return NextResponse.json({
         success: false,
-        error: 'Tipe file tidak didukung'
+        error: `Tipe file tidak didukung: ${file.type}`
       }, { status: 400 })
     }
 
@@ -63,6 +81,12 @@ export async function POST(request: NextRequest) {
     // Simulate processing time
     await new Promise(resolve => setTimeout(resolve, 2000))
 
+    console.log('Conversion completed:', {
+      original_file: fileName,
+      converted_file: convertedFileName,
+      download_url: downloadUrl
+    })
+
     return NextResponse.json({
       success: true,
       message: 'File berhasil dikonversi',
@@ -80,7 +104,7 @@ export async function POST(request: NextRequest) {
     
     return NextResponse.json({
       success: false,
-      error: 'Error processing file conversion'
+      error: error instanceof Error ? error.message : 'Error processing file conversion'
     }, { status: 500 })
   }
 }

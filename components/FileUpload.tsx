@@ -22,7 +22,21 @@ export default function FileUpload() {
       return
     }
 
-    const newFiles = acceptedFiles.map(file => ({
+    // Validate files
+    const validFiles = acceptedFiles.filter(file => {
+      if (file.size > 20 * 1024 * 1024) {
+        toast.error(`File ${file.name} terlalu besar! Maksimal 20MB.`)
+        return false
+      }
+      return true
+    })
+
+    if (validFiles.length === 0) {
+      toast.error('Tidak ada file yang valid untuk diupload')
+      return
+    }
+
+    const newFiles = validFiles.map(file => ({
       ...file,
       id: Math.random().toString(36).substr(2, 9),
       status: 'uploading' as const,
@@ -36,14 +50,28 @@ export default function FileUpload() {
       await uploadFile(file)
     }
     
-    toast.success(`${acceptedFiles.length} file berhasil diupload`)
+    toast.success(`${validFiles.length} file berhasil diupload`)
   }, [conversionType])
 
   const uploadFile = async (file: FileWithPreview) => {
     try {
+      // Update progress to uploading
+      setFiles(prev => prev.map(f => 
+        f.id === file.id 
+          ? { ...f, status: 'uploading', progress: 10 }
+          : f
+      ))
+
       const formData = new FormData()
       formData.append('file', file)
       formData.append('type', conversionType)
+
+      // Update progress to processing
+      setFiles(prev => prev.map(f => 
+        f.id === file.id 
+          ? { ...f, status: 'processing', progress: 50 }
+          : f
+      ))
 
       const response = await fetch('/api/convert', {
         method: 'POST',
@@ -53,23 +81,29 @@ export default function FileUpload() {
       if (response.ok) {
         const result = await response.json()
         
-        setFiles(prev => prev.map(f => 
-          f.id === file.id 
-            ? { ...f, status: 'completed', progress: 100 }
-            : f
-        ))
-        
-        toast.success('File berhasil dikonversi!')
-        
-        // Download hasil konversi
-        if (result.data?.download_url) {
-          const link = document.createElement('a')
-          link.href = result.data.download_url
-          link.download = result.data.converted_file
-          link.click()
+        // Check if result is valid
+        if (result && result.success) {
+          setFiles(prev => prev.map(f => 
+            f.id === file.id 
+              ? { ...f, status: 'completed', progress: 100 }
+              : f
+          ))
+          
+          toast.success('File berhasil dikonversi!')
+          
+          // Download hasil konversi
+          if (result.data && result.data.download_url) {
+            const link = document.createElement('a')
+            link.href = result.data.download_url
+            link.download = result.data.converted_file || file.name
+            link.click()
+          }
+        } else {
+          throw new Error(result?.error || 'Conversion failed')
         }
       } else {
-        throw new Error('Upload failed')
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.error || `HTTP ${response.status}`)
       }
     } catch (error) {
       console.error('Upload error:', error)
@@ -78,7 +112,7 @@ export default function FileUpload() {
           ? { ...f, status: 'error', progress: 0 }
           : f
       ))
-      toast.error('Error saat mengupload file!')
+      toast.error(`Error: ${error instanceof Error ? error.message : 'Upload failed'}`)
     }
   }
 
