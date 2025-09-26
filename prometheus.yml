@@ -1,0 +1,41 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+scrape_configs:
+  # Web Dashboard metrics
+  - job_name: 'web'
+    static_configs:
+      - targets: ['web:3000']
+    metrics_path: '/api/metrics'
+    scrape_interval: 30s
+
+  # API Server metrics
+  - job_name: 'api'
+    static_configs:
+      - targets: ['api:5000']
+    metrics_path: '/api/metrics'
+    scrape_interval: 30s
+
+  # Telegram Bot metrics
+  - job_name: 'bot'
+    static_configs:
+      - targets: ['bot:8000']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+
+  # Database metrics
+  - job_name: 'database'
+    static_configs:
+      - targets: ['database:5432']
+    scrape_interval: 60s
+
+  # Redis metrics
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis:6379']
+    scrape_interval: 60s
