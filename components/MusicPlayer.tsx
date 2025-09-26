@@ -17,6 +17,8 @@ export default function MusicPlayer({ className = '' }: MusicPlayerProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [showSearch, setShowSearch] = useState(false)
   const [currentTrack, setCurrentTrack] = useState('')
+  const [searchResults, setSearchResults] = useState<any[]>([])
+  const [showResults, setShowResults] = useState(false)
   
   const audioRef = useRef<HTMLAudioElement>(null)
   const progressRef = useRef<HTMLDivElement>(null)
@@ -124,16 +126,41 @@ export default function MusicPlayer({ className = '' }: MusicPlayerProps) {
       const data = await response.json()
       
       if (data.success && data.data.results.length > 0) {
-        const firstResult = data.data.results[0]
-        setCurrentTrack(firstResult.title)
-        toast.success(`Found: ${firstResult.title}`)
+        setSearchResults(data.data.results)
+        setShowResults(true)
+        toast.success(`Found ${data.data.results.length} results`)
       } else {
         toast.error('No music found')
+        setSearchResults([])
+        setShowResults(false)
       }
     } catch (error) {
       console.error('Search error:', error)
       toast.error('Error searching music')
     }
+  }
+
+  const playSearchResult = async (track: any) => {
+    setCurrentTrack(track.title)
+    setShowResults(false)
+    
+    // Fetch duration if not already loaded
+    if (track.duration === 'Loading...') {
+      try {
+        const durationResponse = await fetch(`/api/music/duration?videoId=${track.id}`)
+        const durationData = await durationResponse.json()
+        
+        if (durationData.success) {
+          track.duration = durationData.data.duration
+        }
+      } catch (error) {
+        console.error('Error fetching duration:', error)
+      }
+    }
+    
+    toast.success(`Now playing: ${track.title}`)
+    // In a real implementation, you would load the actual audio source
+    // For now, we'll just show the track name
   }
 
   const formatTime = (time: number) => {
@@ -240,6 +267,36 @@ export default function MusicPlayer({ className = '' }: MusicPlayerProps) {
           </button>
         </div>
       </div>
+
+      {/* Search Results */}
+      {showResults && searchResults.length > 0 && (
+        <div className="mt-4">
+          <p className="text-xs text-gray-500 mb-2">Search Results:</p>
+          <div className="space-y-2 max-h-40 overflow-y-auto">
+            {searchResults.map((track, index) => (
+              <div
+                key={index}
+                className="flex items-center space-x-3 p-2 bg-gray-50 hover:bg-gray-100 rounded transition-colors cursor-pointer"
+                onClick={() => playSearchResult(track)}
+              >
+                <img
+                  src={track.thumbnail}
+                  alt={track.title}
+                  className="w-8 h-8 rounded object-cover"
+                />
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-medium text-gray-900 truncate">{track.title}</p>
+                  <p className="text-xs text-gray-500 truncate">{track.artist}</p>
+                  <p className="text-xs text-gray-400">{track.duration}</p>
+                </div>
+                <button className="text-blue-500 hover:text-blue-600">
+                  <Play className="h-4 w-4" />
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Sample Tracks */}
       <div className="mt-4">
