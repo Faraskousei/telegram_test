@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { Bot, Send, FileText, Image, Download, Users, Zap, Shield } from 'lucide-react'
+import Link from 'next/link'
+import { Bot, Send, FileText, Image, Download, Users, Zap, Shield, ExternalLink } from 'lucide-react'
 import MusicPlayer from '@/components/MusicPlayer'
 
 export default function BotPage() {
