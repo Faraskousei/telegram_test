@@ -10,17 +10,17 @@ interface BotStatsProps {
 
 export default function BotStats({ icon: Icon, title, value, change, color }: BotStatsProps) {
   return (
-    <div className="card animate-fade-in">
+    <div className="card">
       <div className="flex items-center justify-between">
         <div>
           <p className="text-sm font-medium text-gray-600">{title}</p>
-          <p className="text-2xl font-bold text-gray-900">{value}</p>
+          <p className="text-xl font-bold text-gray-900">{value}</p>
         </div>
-        <div className={`p-3 rounded-lg ${color.replace('text-', 'bg-').replace('-500', '-100')}`}>
-          <Icon className={`h-6 w-6 ${color}`} />
+        <div className={`p-2 rounded-md ${color.replace('text-', 'bg-').replace('-500', '-600')}`}>
+          <Icon className={`h-5 w-5 text-white`} />
         </div>
       </div>
-      <div className="mt-4 flex items-center">
+      <div className="mt-3 flex items-center">
         <span className="text-sm font-medium text-green-600">{change}</span>
         <span className="text-sm text-gray-500 ml-2">vs last week</span>
       </div>

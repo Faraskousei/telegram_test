@@ -33,7 +33,7 @@ export default function StatsChart() {
 
   if (loading) {
     return (
-      <div className="card animate-pulse">
+      <div className="card">
         <div className="h-4 bg-gray-200 rounded w-1/4 mb-4"></div>
         <div className="space-y-3">
           <div className="h-3 bg-gray-200 rounded"></div>
@@ -85,7 +85,7 @@ export default function StatsChart() {
               <div className="flex-1 bg-gray-100 rounded-full h-2">
                 <div
                   className={`h-2 rounded-full transition-all duration-500 ${
-                    isToday ? 'bg-primary-500' : 'bg-gray-400'
+                    isToday ? 'bg-blue-600' : 'bg-gray-400'
                   }`}
                   style={{ width: `${percentage}%` }}
                 />
@@ -102,15 +102,15 @@ export default function StatsChart() {
       <div className="mt-6 pt-4 border-t border-gray-200">
         <div className="grid grid-cols-3 gap-4 text-center">
           <div>
-            <p className="text-2xl font-bold text-primary-600">{stats.total_users}</p>
+            <p className="text-xl font-bold text-blue-600">{stats.total_users}</p>
             <p className="text-xs text-gray-500">Total Users</p>
           </div>
           <div>
-            <p className="text-2xl font-bold text-green-600">{stats.total_files}</p>
+            <p className="text-xl font-bold text-green-600">{stats.total_files}</p>
             <p className="text-xs text-gray-500">Files Processed</p>
           </div>
           <div>
-            <p className="text-2xl font-bold text-purple-600">{stats.total_size_mb}MB</p>
+            <p className="text-xl font-bold text-purple-600">{stats.total_size_mb}MB</p>
             <p className="text-xs text-gray-500">Data Processed</p>
           </div>
         </div>

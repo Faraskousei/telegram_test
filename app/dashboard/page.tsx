@@ -88,16 +88,16 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50">
-        <Loader2 className="h-10 w-10 animate-spin text-blue-500" />
-        <p className="ml-4 text-lg text-gray-700">Loading Dashboard...</p>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+        <p className="ml-3 text-lg text-gray-700">Loading Dashboard...</p>
       </div>
     )
   }
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50 via-white to-orange-50 p-4 text-center">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4 text-center">
         <p className="text-red-600 text-xl">{error}</p>
       </div>
     )
@@ -105,24 +105,21 @@ export default function DashboardPage() {
 
   return (
     <AuthGuard>
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      <div className="min-h-screen bg-gray-50">
         {/* Header */}
-        <header className="relative z-10 bg-white/80 backdrop-blur-md border-b border-white/20">
+        <header className="bg-white border-b border-gray-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center py-6">
-              <div className="flex items-center space-x-4">
-                <div className="relative">
-                  <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl shadow-lg flex items-center justify-center">
-                    <Bot className="h-7 w-7 text-white" />
-                  </div>
-                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full animate-pulse"></div>
+            <div className="flex justify-between items-center py-4">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                  <Bot className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-2xl font-bold text-gradient">Telegram Multi-Bot</h1>
-                  <p className="text-sm text-gray-600">Admin Dashboard • Online</p>
+                  <h1 className="text-xl font-semibold text-gray-900">Telegram Bot</h1>
+                  <p className="text-sm text-gray-600">Admin Dashboard</p>
                 </div>
               </div>
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-3">
                 <LogoutButton />
               </div>
             </div>
@@ -130,39 +127,45 @@ export default function DashboardPage() {
         </header>
 
         {/* Main Content */}
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <h2 className="text-3xl font-bold text-gray-800 mb-8">Dashboard Overview</h2>
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Dashboard Overview</h2>
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div className="glass-card p-6 flex items-center space-x-4">
-              <Users className="h-10 w-10 text-blue-500" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div className="card flex items-center space-x-4">
+              <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
+                <Users className="h-6 w-6 text-white" />
+              </div>
               <div>
-                <p className="text-gray-500 text-sm">Total Users</p>
-                <p className="text-2xl font-bold text-gray-900">{totalUsers}</p>
+                <p className="text-gray-600 text-sm">Total Users</p>
+                <p className="text-xl font-bold text-gray-900">{totalUsers}</p>
               </div>
             </div>
-            <div className="glass-card p-6 flex items-center space-x-4">
-              <FileText className="h-10 w-10 text-green-500" />
+            <div className="card flex items-center space-x-4">
+              <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center">
+                <FileText className="h-6 w-6 text-white" />
+              </div>
               <div>
-                <p className="text-gray-500 text-sm">Total Files Processed</p>
-                <p className="text-2xl font-bold text-gray-900">{totalFiles}</p>
+                <p className="text-gray-600 text-sm">Total Files Processed</p>
+                <p className="text-xl font-bold text-gray-900">{totalFiles}</p>
               </div>
             </div>
-            <div className="glass-card p-6 flex items-center space-x-4">
-              <Repeat className="h-10 w-10 text-purple-500" />
+            <div className="card flex items-center space-x-4">
+              <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center">
+                <Repeat className="h-6 w-6 text-white" />
+              </div>
               <div>
-                <p className="text-gray-500 text-sm">Total Conversions</p>
-                <p className="text-2xl font-bold text-gray-900">{totalConversions}</p>
+                <p className="text-gray-600 text-sm">Total Conversions</p>
+                <p className="text-xl font-bold text-gray-900">{totalConversions}</p>
               </div>
             </div>
           </div>
 
           {/* Recent Activity */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="glass-card p-6">
-              <h3 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-                <Users className="h-6 w-6 mr-3 text-blue-500" />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div className="card">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <Users className="h-5 w-5 mr-2 text-blue-600" />
                 Recent Users
               </h3>
               <ul className="space-y-3">
@@ -184,16 +187,18 @@ export default function DashboardPage() {
               </ul>
             </div>
 
-            <div className="glass-card p-6">
-              <h3 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-                <Activity className="h-6 w-6 mr-3 text-purple-500" />
+            <div className="card">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <Activity className="h-5 w-5 mr-2 text-purple-600" />
                 Recent Conversions
               </h3>
               <ul className="space-y-3">
                 {recentConversions.length > 0 ? (
                   recentConversions.map((conversion) => (
                     <li key={conversion.id} className="flex items-center space-x-3">
-                      <FileText className="h-6 w-6 text-green-500" />
+                      <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                        <FileText className="h-4 w-4 text-green-600" />
+                      </div>
                       <div>
                         <p className="text-sm font-medium text-gray-900">{conversion.originalFile}</p>
                         <p className="text-xs text-gray-500">
@@ -211,5 +216,7 @@ export default function DashboardPage() {
         </main>
       </div>
     </AuthGuard>
+  )
+}
   )
 }

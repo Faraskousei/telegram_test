@@ -7,8 +7,8 @@ import ErrorBoundary from '@/components/ErrorBoundary'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Telegram Multi-Function Bot Dashboard',
-  description: 'Dashboard untuk mengelola bot Telegram multi-fungsi',
+  title: 'Telegram Bot Dashboard',
+  description: 'Dashboard sederhana untuk mengelola bot Telegram',
 }
 
 export default function RootLayout({

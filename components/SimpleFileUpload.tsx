@@ -85,7 +85,7 @@ export default function SimpleFileUpload({ onFileSelect }: SimpleFileUploadProps
   }
 
   return (
-    <div className="card">
+    <div>
       <div className="mb-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Upload File</h3>
         
@@ -121,10 +121,10 @@ export default function SimpleFileUpload({ onFileSelect }: SimpleFileUploadProps
 
         {/* Selected File */}
         {selectedFile && (
-          <div className="mb-4 p-3 bg-blue-50 rounded-lg">
+          <div className="mb-4 p-3 bg-blue-50 rounded-md">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <FileText className="h-5 w-5 text-blue-600" />
+                <FileText className="h-4 w-4 text-blue-600" />
                 <span className="text-sm text-gray-700">{selectedFile.name}</span>
                 <span className="text-xs text-gray-500">
                   ({(selectedFile.size / 1024 / 1024).toFixed(2)} MB)
@@ -147,10 +147,10 @@ export default function SimpleFileUpload({ onFileSelect }: SimpleFileUploadProps
           className="btn-primary w-full flex items-center justify-center"
         >
           {isUploading ? (
-            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
           ) : (
             <>
-              <Upload className="h-5 w-5 mr-2" />
+              <Upload className="h-4 w-4 mr-2" />
               {selectedFile ? 'Upload & Convert' : 'Pilih File Terlebih Dahulu'}
             </>
           )}

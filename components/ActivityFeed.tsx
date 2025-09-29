@@ -75,7 +75,7 @@ export default function ActivityFeed() {
 
   if (loading) {
     return (
-      <div className="card animate-pulse">
+      <div className="card">
         <div className="h-4 bg-gray-200 rounded w-1/4 mb-4"></div>
         <div className="space-y-3">
           {[...Array(5)].map((_, i) => (
@@ -98,7 +98,7 @@ export default function ActivityFeed() {
         <h3 className="text-lg font-semibold text-gray-900">Aktivitas Terbaru</h3>
         <button
           onClick={fetchActivities}
-          className="text-sm text-primary-600 hover:text-primary-700 font-medium"
+          className="text-sm text-blue-600 hover:text-blue-700 font-medium"
         >
           Refresh
         </button>
@@ -116,8 +116,8 @@ export default function ActivityFeed() {
             const colorClass = getActivityColor(activity.type)
             
             return (
-              <div key={index} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                <div className={`p-2 rounded-lg ${colorClass}`}>
+              <div key={index} className="flex items-center space-x-3 p-3 rounded-md hover:bg-gray-50 transition-colors">
+                <div className={`p-2 rounded-md ${colorClass}`}>
                   <Icon className="h-4 w-4" />
                 </div>
                 <div className="flex-1 min-w-0">
